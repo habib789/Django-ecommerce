@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bootstrap5 %}
+{% block nav %}
+{% include 'accounts/nav.html' %}
+{% endblock %}
+{% block content %}
+<div class="col-md-3">
+    <h6 class="display-6">ORDER LIST</h6>
+</div>
+
+<div class="col-md-9">
+    {% if u_orders %}
+    {% for o in u_orders %}
+
+
+    <ol class="list-group list-group-numbered">
+        <li class="list-group-item d-flex justify-content-between align-items-start" style="background:#0a364e;">
+            <div class="ms-2 me-auto text-light">
+                <div class="text-capitalize">order number <strong>#{{ o.id }}</strong></div>
+                {{o.user.username}} <small>ordered at</small> <small  class="text-muted">{{ o.order_date }}</small><br>
+                <small>TOTAL <span class="text-info">{{ o.get_total_price }} BDT</span></small>
+            </div>
+            <span class="badge bg-warning rounded-pill">
+                <a class="text-decoration-none text-dark" href="{% url 'accounts:order_details' pk=o.pk %}">Order Details</a>
+            </span>
+        </li>
+    </ol>
+        {% endfor %}
+        {% endif %}
+</div>
+{% endblock %}

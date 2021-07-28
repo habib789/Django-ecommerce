@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if object %}
+<div class="col-md-5">
+    <figure class="figure">
+        <img class="figure-img img-fluid" src="{{ object.image.url }}" alt="">
+    </figure>
+</div>
+
+<div class="col-md-7">
+    <div class="container-fluid">
+        <div class="col-md-6 mb-2" style="border-left:1px solid #17a2b8;">
+            <h2>{{ object.title }}</h2>
+            <h6>{{ object.price }} BDT</h6>
+           se <p><small>{{ object.description }}</small></p>
+        </div>
+        <a href="{% url 'products:add_to_cart' pk=object.pk %}" class="text-uppercase btn btn-info btn-lg nice-btn text-light">Add to
+            Cart</a>
+
+    </div>
+</div>
+{% endif %}
+{% endblock %}

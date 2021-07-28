@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+<div class="col-md-5">
+    <h1 class="text-uppercase">Blog Post</h1>
+    {% if user.is_authenticated %}
+    <h4 class="text-warning">@{{ user.username }}</h4>
+    {% else %}
+    <h2 class="text-info">Please Login</h2>
+    <a href="{% url 'accounts:login' %}" class="btn btn-warning btn-lg nice-btn">Login</a>
+    {% endif %}
+
+</div>
+<div class="col-md-7">
+    <div class="text-right d-flex justify-content-end">
+        {% include 'blog/search.html' %}
+        <div class="ml-2">
+            <a href="{% url 'blog:post_create' %}" class="btn btn-info nice-btn text-uppercase">
+                <i class="fa fa-edit"></i> Create Post
+            </a>
+        </div>
+    </div>
+
+
+    <div class="mb-3 mt-3">
+        {% if searched %}
+        <div>You have searched for <strong>"{{ searched }}"</strong></div>
+
+
+        {% if blog_search.count < 1 %}
+        <div class="alert alert-warning">We have found <strong>0 search results</strong></div>
+        {% else %}
+        <p>we have found <strong>" {{ blog_search.count }} "</strong> results</p>
+        {% for p in blog_search %}
+        <div class="card mb-3 mt-3" style="background:#0a364e;">
+            <div class="row no-gutters clearfix">
+                <div class="float-left">
+                    <img src="{% static 'img/user1-128x128.jpg' %}" class="rounded-circle my-5 ml-3" height="40"
+                         width="40"
+                         alt="User Image">
+                </div>
+                <div class="float-left">
+                    <div class="card-body" style="background-color:#0a364e;">
+                        <a href="{% url 'blog:post_detail' pk=p.pk %}" class="text-light text-decoration-none">
+                            <small><i>Posted By: </i><span class="text-info">{{ p.user.username }}</span></small>
+                            <small>on <strong class="text-muted">{{ p.publish_date }}</strong></small>
+                            <h6>{{ p.title }}</h6>
+                            <p>{{ p.description|safe }}</p>
+
+
+                            {% if user.is_authenticated %}
+                            <div class="clearfix">
+                                <form action="{% url 'blog:post_like' pk=p.pk %}" method="post">
+                                    {% csrf_token %}
+                                    <small>
+                                        <button class="btn btn-light btn-sm float-left" type="submit" name="p_id"
+                                                value="{{ p.id }}">
+                                            <i class="fas  fa-thumbs-up text-info"></i> Like
+                                        </button>
+                                    </small>
+                                </form>
+
+                                <a href="{% url 'blog:post_comment' pk=p.pk %}"
+                                   class="btn btn-info btn-sm ml-2 float-left">Comment</a>
+                            </div>
+                            <br>
+                            {% endif %}
+
+                            {% if user.is_authenticated and user.username == p.user.username %}
+                            <small>
+                                <a href="{% url 'blog:post_edit' pk=p.pk %}" class="text-info">Edit</a>
+                            </small>
+                            <a href="{% url 'blog:post_delete' pk=p.pk %}" class="text-danger">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                            {% endif %}
+                            <p>{{ p.comments.count }} Comments</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+        <!--    pagination-->
+        {% if paginator %}
+        <nav aria-label="...">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                </li>
+                {% endif %}
+                <!--          <li class="page-item"><a class="page-link" href="?page=1">1</a></li>-->
+                <li class="page-item active" aria-current="page">
+              <span class="page-link bg-info">
+                {{ page_obj.number }}
+                  <!--              of {{ page_obj.paginator.num_pages }}-->
+                <span class="sr-only">(current)</span>
+              </span>
+                </li>
+                <!--        <li class="page-item"><a class="page-link" href="?page=3">3</a></li>-->
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+        {% endif %}
+         {% else %}
+        <div>You have searched for Nothing</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

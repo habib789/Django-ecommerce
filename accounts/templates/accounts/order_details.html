@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load bootstrap5 %}
+{% block nav %}
+{% include 'accounts/nav.html' %}
+{% endblock %}
+{% block content %}
+<div class="col-md-3">
+    <h6 class="display-6">ORDER DETAILS</h6>
+</div>
+
+<div class="col-md-9">
+
+    {% if order_details %}
+    <table class="table text-light"  style="background:#0a364e;">
+                <thead>
+                <tr class="border-none">
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total Price</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for p in order_details.cart_products.all %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ p.products.title }}</td>
+                    <td class="">
+                        <span>{{ p.quantity }}</span>
+                    </td>
+
+                    <td>{{ p.products.price }} BDT</td>
+                    <td>{{ p.total_price }} BDT</td>
+                    <td class="text-warning">
+                        {% if order_details.order_status == False %}
+                        Pending
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-warning">Total Amount</td>
+                    <td><strong>{{ order_details.get_total_price }} BDT</strong></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+    {% endif %}
+</div>
+{% endblock %}

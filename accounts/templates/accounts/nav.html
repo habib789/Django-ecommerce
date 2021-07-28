@@ -1,0 +1,15 @@
+
+<div class="mx-auto">
+  <ol class="breadcrumb text-light " style="background:transparent;">
+      <li class="breadcrumb-item active ml-auto">
+        <a class="text-decoration-none text-light" href="{% url 'accounts:profile_view' pk=user.pk username=user.username %}"><i class="fas fa-user mr-2"></i><small>PROFILE</small></a>
+    </li>
+    <li class="breadcrumb-item">
+        <a class="text-decoration-none text-light" href="{% url 'accounts:order_list' %}"><i class="fas fa-shopping-bag mr-2"></i><small>ORDER</small></a>
+    </li>
+    <li class="breadcrumb-item" aria-current="page">
+        <a class="text-decoration-none text-light" href="#"><i class="fas fa-chart-line mr-2"></i><small>ACTIVITY</small></a>
+    </li>
+  </ol>
+
+</div>

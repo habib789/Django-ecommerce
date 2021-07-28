@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% block content %}
+<div class="col-md-7">
+    <h1 class="text-uppercase">Comment</h1>
+    {% if user.is_authenticated %}
+    <h2 class="tex t-warning">@{{ user.username }}</h2>
+    <h2 class="text-info text-uppercase"><i>Create Comment</i></h2>
+    {% else %}
+    <a href="{% url 'accounts:login' %}" class="btn btn-warning btn-lg">Login</a>
+    {% endif %}
+</div>
+<div class="col-md-5">
+    {% if user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input type="submit" value="Post Comment" class="btn btn-info btn-lg">
+        <script>
+            var name = "{{ user.id }}";
+            document.getElementById('usr').value = name;
+        </script>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

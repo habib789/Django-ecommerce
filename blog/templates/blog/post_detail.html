@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="col-md-5">
+    <h1 class="text-uppercase">Blog Post</h1>
+    {% if user.is_authenticated %}
+    <h2 class="text-warning">@{{ user.username }}</h2>
+    {% else %}
+    <h2 class="text-info">Please Login</h2>
+    <a href="{% url 'accounts:login' %}" class="btn btn-warning btn-lg">Login</a>
+    {% endif %}
+</div>
+<div class="col-md-7">
+    <div class="list-group">
+        <div class="card-body">
+            <a href="" class="text-light text-decoration-none">
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.description|safe }} <br>
+                    <small><i>Posted By: </i><span class="text-info">{{ post.user.username }}</span></small>
+                    <br>
+
+                    <a  href="#user_like" data-toggle="collapse">{{ post_likes }} Likes</a>
+                    {% if user.is_authenticated %}
+<!--                    <form action="{% url 'blog:post_like' pk=post.pk %}" method="post">-->
+<!--                        {% csrf_token %}-->
+<!--                        <small>-->
+<!--                            <button class="btn btn-light btn-sm float-left" type="submit" name="p_id"-->
+<!--                                    value="{{ post.id }}">-->
+<!--                                <i class="fas fa-thumbs-up text-info"></i> Like-->
+<!--                            </button>-->
+<!--                        </small>-->
+<!--                    </form>-->
+                    <small>
+                        <ul class="collapse list-unstyled" id="user_like">
+                            {% for u_like in users_like %}
+                            <li class="text-warning">
+                                <a class="text-info text-decoration-none" href="">{{ u_like.first_name }}</a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </small>
+                    {% endif %}
+                    {% if user.is_authenticated and user.username == post.user.username %}
+                        <small><a href="{% url 'blog:post_edit' pk=post.pk %}" class="text-info">Edit</a></small>
+                        <small><a href="{% url 'blog:post_delete' pk=post.pk %}" class="text-danger">
+                                <i class="fa fa-trash"></i>
+                        </a></small>
+                    {% endif %}
+                </p>
+            </a>
+
+            <!--comments-->
+            {% if post.comments.all %}
+            <h5 class="text-warning">Comments</h5>
+           {% for c in post.comments.all %}
+             <div class="ml-5">
+                <small>Commented By <span class="text-info">{{ c.user.username }}</span></small><br>
+                <div class="ml-3">
+                    <small>{{ c.text }}</small><br>
+                    <small class="text-muted"><strong>{{ c.comment_date }}</strong></small>
+                    {% if user.is_authenticated and user.username == c.user.username %}
+                    <a href="{% url 'blog:comment_remove' pk=c.pk %}" class="text-danger">
+                        <i class="fa fa-trash"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+           {% endfor %}
+            {% else %}
+                <p>0 Comment</p>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

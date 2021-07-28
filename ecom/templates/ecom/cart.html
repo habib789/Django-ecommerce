@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="col-md-4">
+    <h2>CART</h2>
+</div>
+
+
+<div class="col-md-8 mt-5">
+    <div class="container-fluid mx-auto">
+        <div class="row">
+            {% if objects.cart_products.all %}
+            <table class="table text-light"  style="background:#0a364e;">
+                <thead>
+                <tr class="border-none">
+                    <th>#</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total Price</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for p in objects.cart_products.all %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ p.products.title }}</td>
+                    <td class="qty text-center" id="qty">
+                        <a href="{% url 'products:reduce_from_cart' pk=p.products.pk %}" class="float-start">
+                            <i class="fas fa-minus-square mr-2 text-info"></i>
+                        </a>
+                        <span>{{ p.quantity }}</span>
+                        <a href="{% url 'products:add_to_cart' pk=p.products.pk %}" class="float-end">
+                            <i class="fas fa-plus-square ml-2 text-info"></i>
+                        </a>
+                    </td>
+
+                    <td>{{ p.products.price }} BDT</td>
+                    <td>{{ p.total_price }} BDT</td>
+                    <td class="text-center">
+                        <a href="{% url 'products:remove_from_cart' pk=p.products.pk %}" class="text-danger remove"
+                           title="remove from cart">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-warning">Total Amount</td>
+                    <td><strong>{{ objects.get_total_price }} BDT</strong></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="ms-auto">
+                <a href="{% url 'products:product_list' %}" class="btn btn-info ms-auto">Continue Shopping</a>
+                <a href="{% url 'products:checkout' %}" class="btn btn-warning ms-auto">Checkout</a>
+            </div>
+            {% else %}
+            <div class="col-md-8">
+                <p class="alert alert-secondary">
+                    <i class="fas fa-info text-info mr-2"></i>
+                    Your cart is empty
+                </p>
+                <a href="{% url 'products:product_list' %}" class="btn btn-info">Continue Shopping</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

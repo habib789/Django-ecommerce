@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% block content %}
+<div class="col-md-7">
+    <h1 class="text-capitalize">update Profile Info</h1>
+</div>
+<div class="col-md-5">
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input type="submit" class="btn btn-info btn-lg" value="Update">
+    </form>
+</div>
+{% endblock %}

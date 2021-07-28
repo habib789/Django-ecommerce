@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+
+{% block content %}
+<div class="col-md-5">
+    <h1 class="text-uppercase">Blog Post</h1>
+    {% if user.is_authenticated %}
+    <h2 class="text-warning">@{{ user.username }}</h2>
+    <h2 class="text-info text-uppercase"><i>Update post</i></h2>
+    {% else %}
+    <a href="{% url 'accounts:login' %}" class="btn btn-warning btn-lg">Login</a>
+    {% endif %}
+</div>
+<div class="col-md-7">
+    {% if user.is_authenticated and user.id == object.user.id %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.media }}
+        {% bootstrap_form form %}
+        <input type="submit" value="Update" class="btn btn-info btn-lg">
+        <script>
+            var name = "{{ user.id }}";
+            document.getElementById('usr').value = name;
+        </script>
+    </form>
+    {% else %}
+    <div class="alert alert-danger">
+        <p>You have no authority!!</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

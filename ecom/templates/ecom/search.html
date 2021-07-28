@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="com-nd-4">
+    <h2>CATEGORY</h2>
+</div>
+
+<div class="col-md-8 mx-auto">
+    {% include 'ecom/search_item.html' %}
+    <div class="container-fluid mt-5">
+        <div>You have searched for <strong>"{{ search_item }}"</strong></div>
+        {% if search_title.count < 1 %}
+        <div class="alert alert-warning">We have found <strong>{{ search_title.count }} search results</strong></div>
+        {% else %}
+        <p>we have found <strong>" {{ search_title.count }} "</strong> results</p>
+
+        <div class="row">
+            {% if search_title %}
+            {% for pro in search_title %}
+            <div class="col-md-4 col-sm-6 mb-2" style="border-left:1px solid #17a2b8;">
+                <figure class="figure">
+                    <img class="figure-img img-fluid" src="{{ pro.image.url }}" alt="">
+                    <figcaption>
+                        <a class="text-decoration-none text-light"
+                           href="{% url 'products:product_detail' slug=pro.slug  %}">
+                            <div class="ml-2">
+                                <h6>{{ pro.title }}</h6>
+                                <h5>Price {{ pro.price }} BDT</h5>
+                            </div>
+                        </a>
+                        <a href="{% url 'products:add_to_cart' pk=pro.pk %}"
+                           class="btn btn-info btn-block nice-btn text-light">add to cart</a>
+                    </figcaption>
+                </figure>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+    <!--    pagination-->
+    {% if paginator %}
+    <nav aria-label="...">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            <!--          <li class="page-item"><a class="page-link" href="?page=1">1</a></li>-->
+            <li class="page-item active" aria-current="page">
+          <span class="page-link bg-info">
+            {{ page_obj.number }}
+              <!--              of {{ page_obj.paginator.num_pages }}-->
+            <span class="sr-only">(current)</span>
+          </span>
+            </li>
+            <!--        <li class="page-item"><a class="page-link" href="?page=3">3</a></li>-->
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+    {% endif %}
+
+</div>
+
+{% endblock %}

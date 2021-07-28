@@ -1,0 +1,9 @@
+        <div class="d-flex justify-content-center">
+            <form action="{% url 'blog:post_searched' %}" method="post">
+                {% csrf_token %}
+                <div class="searchbar">
+                    <input class="search_input text-light" type="text" name="searched" placeholder="Search...">
+                    <button class="search_icon"><i class="fas fa-search text-dark"></i></button>
+                </div>
+            </form>
+        </div>

@@ -1,0 +1,118 @@
+*{
+margin:0;
+padding:0;
+}
+
+body{
+background-color: #0a1d25;
+color:white;
+font-family: 'Montserrat', sans-serif;
+}
+nav li{
+  list-style: none;
+  display: inline-block;
+}
+nav li a{
+  text-decoration: none;
+  position: relative;
+  
+  display: block;
+  overflow: hidden;
+  transition: 0.7s all;
+  padding: 14px 30px;
+}
+nav li a:before{
+  content: '';
+  width: 60px;
+  position: absolute;
+  border-bottom: 2px solid #17a2b8;
+  bottom: 0;
+  right: 350px;
+  transition: 0.7s all;
+}
+nav li a:hover:before{
+  right: 0;
+}
+.nav-link{
+font-size: 14px;
+}
+.form-control{
+	border: none;
+	border-radius: 0;
+	background: transparent;
+	outline: none;
+}
+
+.form-group input,textarea{
+	border-bottom: 1px solid #17a2b8;
+	color: #17a2b8;
+}
+
+.form-control:focus{
+    border-bottom: 1px solid #17a2b8;
+	box-shadow: none;
+	background: transparent;
+	color: #17a2b8;
+}
+.form-group textarea{
+    color: #17a2b8;
+	border: 1px solid black;
+}
+
+.form-group textarea{
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #17a2b8;
+}
+.form-group textarea:focus{
+	border-bottom: 1px solid #17a2b8;
+	box-shadow: none;
+	background: transparent;
+	color: #17a2b8;
+}
+
+
+.nice-btn{
+font-size:12px;
+font-weight:bold;
+text-align:center;
+text-transform:uppercase;
+}
+.nice-btn:focus{
+box-shadow: none;
+}
+
+.searchbar{
+    margin-bottom: auto;
+    margin-top: auto;
+    height: 40px;
+    background-color: #353b48;
+    border-radius: 30px;
+    padding: 5px;
+}
+
+.search_input{
+    border: 0;
+    outline: 0;
+    background: none;
+    width: 250px;
+    padding: 0 10px;
+}
+
+
+.searchbar:hover > .search_icon{
+    background: white;
+    color: #17a2b8;
+}
+
+.search_icon{
+    color: #17a2b8;
+    height: 30px;
+    width: 30px;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    text-decoration:none;
+}
