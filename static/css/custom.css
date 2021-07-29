@@ -43,15 +43,15 @@ font-size: 14px;
 	outline: none;
 }
 
-.form-group input,textarea{
-	border-bottom: 1px solid #17a2b8;
+.form-control{
+	background-color: #0a364e;
 	color: #17a2b8;
 }
 
 .form-control:focus{
     border-bottom: 1px solid #17a2b8;
 	box-shadow: none;
-	background: transparent;
+	background: #0a364e;
 	color: #17a2b8;
 }
 .form-group textarea{
