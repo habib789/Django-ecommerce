@@ -7,6 +7,9 @@ from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import BillingForm
+from django.core.mail import send_mail
+from django.conf import settings
+from django.template.loader import render_to_string
 
 
 class ProductView(ListView):
@@ -133,7 +136,6 @@ class Checkout(LoginRequiredMixin, View):
                 country = form.cleaned_data.get('country')
                 zip = form.cleaned_data.get('zip')
                 payment = form.cleaned_data.get('payment')
-                # print(contact_no)
                 billing = Address(
                     user=self.request.user,
                     customer_name=customer_name,
@@ -142,21 +144,30 @@ class Checkout(LoginRequiredMixin, View):
                     country=country,
                     zip=zip,
                 )
-                # print(form.cleaned_data)
                 billing.save()
                 order.order_address = billing
                 if payment == 'c':
                     order.order_status = True
                 order.save()
+                # template = render_to_string('ecom/email_template.html',
+                #                             {'name': self.request.user.first_name})
+                send_mail(
+                    'Hi' + self.request.user.first_name + ',' + 'ORDER PLACEMENT SUCCESSFULLY!!',
+                    'Thank You for choosing us. GEARBOX',
+                    settings.EMAIL_HOST_USER,
+                    ['rahamanhabib2802@gmail.com'],
+                    fail_silently=False,
+                )
+
+                # email.send(fail_silently=False)
                 messages.info(self.request, 'YOUR ORDER HAS BEEN PLACED')
-                if payment == 'c':
-                    return redirect('products:product_list')
-                else:
-                    return redirect('products:checkout')
+
+                return redirect('products:product_list')
             else:
                 messages.info(self.request, 'Invalid')
                 return redirect('products:checkout')
         except:
             messages.warning(self.request, 'Invalid')
             return redirect('products:cart')
+
 
