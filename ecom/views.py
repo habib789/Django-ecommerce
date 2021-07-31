@@ -7,9 +7,10 @@ from django.http import Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import BillingForm
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 
 class ProductView(ListView):
@@ -129,6 +130,9 @@ class Checkout(LoginRequiredMixin, View):
         form = BillingForm(self.request.POST or None)
         try:
             order = Order.objects.get(user=self.request.user, order_status=False)
+            html_content = render_to_string('ecom/email_template.html',
+                                            {'name': self.request.user.first_name,
+                                             'orderNum': order.id})
             if form.is_valid():
                 customer_name = form.cleaned_data.get('customer_name')
                 contact_no = form.cleaned_data.get('contact_no')
@@ -148,26 +152,25 @@ class Checkout(LoginRequiredMixin, View):
                 order.order_address = billing
                 if payment == 'c':
                     order.order_status = True
-                order.save()
-                # template = render_to_string('ecom/email_template.html',
-                #                             {'name': self.request.user.first_name})
-                send_mail(
-                    'Hi' + self.request.user.first_name + ',' + 'ORDER PLACEMENT SUCCESSFULLY!!',
-                    'Thank You for choosing us. GEARBOX',
-                    settings.EMAIL_HOST_USER,
-                    ['rahamanhabib2802@gmail.com'],
-                    fail_silently=False,
-                )
-
-                # email.send(fail_silently=False)
-                messages.info(self.request, 'YOUR ORDER HAS BEEN PLACED')
-
-                return redirect('products:product_list')
+                    order.save()
+                    text_content = strip_tags(html_content)
+                    subject = 'Hi, ' + self.request.user.first_name + ',' + 'ORDER PLACED SUCCESSFULLY!!',
+                    order_mail = EmailMultiAlternatives(
+                        subject,
+                        text_content,
+                        settings.EMAIL_HOST_USER,
+                        ['rahamanhabib2802@gmail.com']
+                    )
+                    order_mail.attach_alternative(html_content, "text/html")
+                    order_mail.send()
+                    messages.info(self.request, 'YOUR ORDER HAS BEEN PLACED')
+                    return redirect('products:product_list')
+                else:
+                    messages.info(self.request, 'Invalid')
+                    return redirect('products:checkout')
             else:
                 messages.info(self.request, 'Invalid')
                 return redirect('products:checkout')
         except:
             messages.warning(self.request, 'Invalid')
             return redirect('products:cart')
-
-
