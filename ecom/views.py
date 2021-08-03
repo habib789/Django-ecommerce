@@ -15,7 +15,7 @@ from django.utils.html import strip_tags
 
 class ProductView(ListView):
     model = Product
-    paginate_by = 6
+    paginate_by = 8
 
 
 class ProductDetailView(DetailView):
@@ -79,6 +79,8 @@ def remove_from_cart(request, pk):
         order = order_qs[0]
         if order.cart_products.filter(products__pk=product.pk).exists():
             order_product.delete()
+            if order.cart_products.count() == 0:
+                order.delete()
             messages.info(request, 'Product Removed')
             return redirect('products:cart')
         else:

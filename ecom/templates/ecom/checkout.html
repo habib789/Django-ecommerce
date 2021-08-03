@@ -3,6 +3,7 @@
 {% endblock %}
 
 {% block content %}
+{% if objects.cart_products.count > 0 %}
 <div class="container">
     <div class="text-center">
         <h2 class="text-uppercase">Checkout form</h2>
@@ -92,4 +93,13 @@
         </div>
     </div>
 </div>
+ {% else %}
+            <div class="col-md-8">
+                <p class="alert alert-danger">
+                    <i class="fas fa-info text-info mr-2"></i>
+                    <b>Alert!!</b> You are not suppose to be here.
+                </p>
+                <a href="{% url 'products:product_list' %}" class="btn btn-info">Continue Shopping</a>
+            </div>
+{% endif %}
 {% endblock %}

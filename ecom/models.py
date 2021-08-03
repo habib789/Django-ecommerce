@@ -27,9 +27,9 @@ class Product(models.Model):
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(max_length=50, default='pending')
-    products = models.ForeignKey(Product, models.CASCADE)
+    products = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):

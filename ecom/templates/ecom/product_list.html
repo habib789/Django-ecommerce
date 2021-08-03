@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="com-nd-4">
-    <h2>CATEGORY</h2>
+<div class="col-md-3">
+    <h3>CATEGORY</h3>
 </div>
 
-<div class="col-md-8 mx-auto">
+<div class="col-md-9">
     {% include 'ecom/search_item.html' %}
     <div class="container-fluid mt-5">
         <div class="row">
             {% if product_list %}
                 {% for pro in product_list %}
-                    <div class="col-md-4 col-sm-6 mb-2"style="border-left:1px solid #17a2b8;">
+                    <div class="col-xs-6 col-sm-6 col-md-4 col-xl-3 mb-2" style="border-left:1px solid #17a2b8;">
                         <figure class="figure">
                             <img class="figure-img img-fluid" src="{{ pro.image.url }}" alt="">
                             <figcaption>
                                 <a class="text-decoration-none text-light" href="{% url 'products:product_detail' slug=pro.slug  %}">
-                                    <div class="ml-2">
+                                    <div class="ms-2">
                                         <h6>{{ pro.title }}</h6>
                                         <h5>Price {{ pro.price }} BDT</h5>
                                     </div>
