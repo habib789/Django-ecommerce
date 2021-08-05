@@ -6,14 +6,37 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
+class Category(models.Model):
+    name = models.CharField(unique=True, max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = 'categories'
+
+
+class SubCategory(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    name = models.CharField(unique=True, max_length=50, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['name']
+        verbose_name_plural = 'sub categories'
+
+
 class Product(models.Model):
+    sub_cat = models.ForeignKey(SubCategory, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=200)
     slug = models.SlugField(blank=True, null=True)
     description = models.TextField()
     price = models.FloatField()
     stock = models.PositiveIntegerField()
     image = models.ImageField(upload_to='ecom/photos')
-    category = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.title
