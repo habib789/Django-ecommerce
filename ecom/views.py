@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, Cart, Order, Address
+from .models import Product, Cart, Order, Address, Category, SubCategory
 from django.views.generic import ListView, DetailView, View, TemplateView
 from django.utils import timezone
 from django.contrib import messages
@@ -16,6 +16,24 @@ from django.utils.html import strip_tags
 class ProductView(ListView):
     model = Product
     paginate_by = 8
+
+
+def product_view(request, pk=None, p_or_c=None):
+    if p_or_c is None:
+        product_list = Product.objects.all()
+    elif p_or_c == 'c':
+        sub_cats = SubCategory.objects.get(pk=pk)
+        product_list = sub_cats.product_set.all()
+    elif p_or_c == 'p':
+        product_list = []
+        categories = Category.objects.get(pk=pk)
+        sub_cats = categories.sub_cat.all()
+        for sub_cat in sub_cats:
+            product = sub_cat.product_set.all()
+            product_list += product
+    else:
+        product_list = []
+    return render(request, 'ecom/product_list.html', {'product_list': product_list})
 
 
 class ProductDetailView(DetailView):
