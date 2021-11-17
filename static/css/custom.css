@@ -84,7 +84,7 @@ nav .wrapper{
 }
 .mega-box .content{
   background: #242526;
-  padding: 25px 20px;
+  padding: 5px 20px;
   display: flex;
   width: 100%;
   justify-content: space-between;
@@ -101,21 +101,21 @@ nav .wrapper{
 }
 .content .row header{
   color: #f2f2f2;
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: bold;
 }
 .content .row .mega-links{
   margin-left: -40px;
   border-left: 1px solid rgba(255,255,255,0.09);
 }
 .row .mega-links li{
-  padding: 0 20px;
+  padding: 0 15px;
 }
 .row .mega-links li a{
   padding: 0px;
-  padding: 0 20px;
+  padding: 0 15px;
   color: #d9d9d9;
-  font-size: 17px;
+  font-size: 14px;
   display: block;
 }
 .row .mega-links li a:hover{
@@ -123,7 +123,7 @@ nav .wrapper{
 }
 .wrapper .btn{
   color: #fff;
-  font-size: 20px;
+  font-size: 16px;
   cursor: pointer;
   display: none;
 }
@@ -176,7 +176,8 @@ nav .wrapper{
   .nav-links li a{
     padding: 0 20px;
     display: block;
-    font-size: 20px;
+    font-size: 16px;
+    font-transform:uppercase;
   }
   .nav-links .drop-menu{
     position: static;
@@ -200,7 +201,8 @@ nav .wrapper{
   .nav-links .mobile-item{
     display: block;
     color: #f2f2f2;
-    font-size: 20px;
+    font-size: 16x;
+    font-transform: uppercase;
     font-weight: 500;
     padding-left: 20px;
     cursor: pointer;
@@ -215,11 +217,12 @@ nav .wrapper{
   }
   .drop-menu li a{
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 16px;
+    font-transform:uppercase;
   }
   .mega-box{
     position: static;
-    top: 65px;
+    top: 50px;
     opacity: 1;
     visibility: visible;
     padding: 0 20px;
@@ -249,7 +252,7 @@ nav .wrapper{
     margin: 0;
   }
   .content .row header{
-    font-size: 19px;
+    font-size: 18px;
   }
 }
 nav input{
@@ -350,4 +353,67 @@ box-shadow: none;
     align-items: center;
     border-radius: 50%;
     text-decoration:none;
+}
+
+
+
+*{
+  margin: 0;
+  padding: 0;
+  font-family: "Open Sans",sans-serif;
+}
+
+
+.pagination{
+  text-align: center;
+}
+
+.pagination a{
+  text-decoration:none;
+  margin: 5px 1px;
+  display: inline-block;
+  width: 60px;
+  background: #2c3e50;
+  height: 60px;
+  line-height: 60px;
+  color: #fff;
+  font-weight: 600;
+  transition: 0.3s;
+  position: relative;
+  padding-right: 26px;
+}
+.prev,.next{
+  padding-right: 12px !important;
+  font-size: 20px;
+}
+.pagination a:hover{
+  color: #e74c3c;
+}
+
+.active{
+  color: #e74c3c !important;
+}
+
+.prev{
+  border-radius: 30px 0 0 30px;
+}
+
+.next{
+  border-radius: 0 30px 30px 0;
+}
+
+.pagination a::before,.pagination a:after{
+  content: "";
+  position: absolute;
+  border-top: 30px solid transparent;
+  border-bottom: 30px solid transparent;
+}
+.num::before,.next::before{
+  border-right: 20px solid #2c3e50;
+  right: 100%;
+}
+
+.num:after,.prev:after{
+  border-right: 20px solid #f1f1f1;
+  right: 0;
 }

@@ -1,60 +1,81 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="col-md-3">
-    <h3>CATEGORY</h3>
-</div>
-
-<div class="col-md-9">
+<div class="col-md-9 mx-auto">
     {% include 'ecom/search_item.html' %}
     <div class="container-fluid mt-5">
         <div class="row">
-            {% if product_list %}
-                {% for pro in product_list %}
-                    <div class="col-xs-6 col-sm-6 col-md-4 col-xl-3 mb-2" style="border-left:1px solid #17a2b8;">
-                        <figure class="figure">
-                            <img class="figure-img img-fluid" src="{{ pro.image.url }}" alt="">
-                            <figcaption>
-                                <a class="text-decoration-none text-light" href="{% url 'products:product_detail' slug=pro.slug  %}">
-                                    <div class="ms-2">
-                                        <h6>{{ pro.title }}</h6>
-                                        <h5>Price {{ pro.price }} BDT</h5>
-                                    </div>
-                                </a>
-                                <a href="{% url 'products:add_to_cart' pk=pro.pk %}" class="btn btn-info btn-block nice-btn text-light">add to cart</a>
-                            </figcaption>
-                        </figure>
-                    </div>
-                {% endfor %}
+            {% if page_obj %}
+            {% for pro in page_obj %}
+            <div class="col-xs-6 col-sm-6 col-md-4 col-xl-3 mb-2" style="border-left:1px solid #17a2b8;">
+                <figure class="figure">
+                    <img class="figure-img img-fluid" src="{{ pro.image.url }}" alt="">
+                    <figcaption>
+                        <a class="text-decoration-none text-light"
+                           href="{% url 'products:product_detail' slug=pro.slug  %}">
+                            <div class="ms-2">
+                                <h6>{{ pro.title }}</h6>
+                                <h5>Price {{ pro.price }} BDT</h5>
+                            </div>
+                        </a>
+
+                        <a href="{% url 'products:add_to_cart' pk=pro.pk %}"
+                           class="btn btn-info btn-block nice-btn text-light">
+                            add to cart
+                        </a>
+                    </figcaption>
+                </figure>
+            </div>
+            {% endfor %}
             {% endif %}
         </div>
     </div>
-<!--    pagination-->
-    {% if paginator %}
-    <nav aria-label="...">
-      <ul class="pagination justify-content-center">
-          {% if page_obj.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-            </li>
-          {% endif %}
-<!--          <li class="page-item"><a class="page-link" href="?page=1">1</a></li>-->
-        <li class="page-item active" aria-current="page">
-          <span class="page-link bg-info">
-            {{ page_obj.number }}
-<!--              of {{ page_obj.paginator.num_pages }}-->
-            <span class="sr-only">(current)</span>
-          </span>
-        </li>
-<!--        <li class="page-item"><a class="page-link" href="?page=3">3</a></li>-->
-          {% if page_obj.has_next %}
-            <li class="page-item">
-              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-            </li>
-          {% endif %}
-      </ul>
-</nav>
+    <!--    pagination-->
+    {% if page_obj %}
+    <div class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}" class="prev"><i class="fas fa-angle-left"></i></a>
+        {% endif %}
+        <a href="#" class="num active">{{ page_obj.number }}</a>
+        <a href="#" class="num">2</a>
+        <a href="#" class="num">3</a>
+        <a href="#" class="num">4</a>
+        <a href="#" class="num">5</a>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}" class="next"><i class="fas fa-angle-right"></i></a>
+        {% else %}
+        <a href="#" class="next disabled" tabindex="-1" aria-disabled="true"><i class="fas fa-angle-right"></i></a>
+        {% endif %}
+
+        {{ page_obj.num_pages }}
+    </div>
     {% endif %}
+    <!--    {% if page_obj %}-->
+    <!--    <nav aria-label="...">-->
+    <!--        <ul class="pagination justify-content-center">-->
+    <!--            {% if page_obj.has_previous %}-->
+    <!--            <li class="page-item">-->
+    <!--                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>-->
+    <!--            </li>-->
+    <!--            {% endif %}-->
+    <!--            &lt;!&ndash;          <li class="page-item"><a class="page-link" href="?page=1">1</a></li>&ndash;&gt;-->
+    <!--            <li class="page-item active" aria-current="page">-->
+    <!--          <span class="page-link bg-info">-->
+    <!--            {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}-->
+    <!--              &lt;!&ndash;              of {{ page_obj.paginator.num_pages }}&ndash;&gt;-->
+    <!--            <span class="sr-only">(current)</span>-->
+    <!--          </span>-->
+    <!--            </li>-->
+    <!--            &lt;!&ndash;        <li class="page-item"><a class="page-link" href="?page=3">3</a></li>&ndash;&gt;-->
+    <!--            {% if page_obj.has_next %}-->
+    <!--            <li class="page-item">-->
+    <!--                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>-->
+    <!--                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>-->
+    <!--            </li>-->
+    <!--            {% endif %}-->
+    <!--        </ul>-->
+    <!--    </nav>-->
+    <!--    {% endif %}-->
 </div>
 
 {% endblock %}

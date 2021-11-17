@@ -16,6 +16,30 @@
 </head>
 
 <body>
+
+<nav>
+    <ol class="breadcrumb justify-content-end m-3">
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+            <a class="nav-link text-light" href="{% url 'products:cart' %}">Cart</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" href="{% url 'accounts:profile_view' username=user.username pk=user.pk %}">My Account</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" href="{% url 'accounts:logout' %}">Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+            <a class="nav-link text-light" href="{% url 'accounts:signup' %}">Sign Up</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" href="{% url 'accounts:login' %}">Login</a>
+        </li>
+        {% endif %}
+    </ol>
+</nav>
+
 <!--<nav class="navbar navbar-expand-lg navbar-dark" style="background:#0a364e;">-->
 <!--    <a class="navbar-brand text-uppercase" href="{% url 'products:product_list' %}">-->
 <!--        <img class="bg-light img-fluid" src="{% static 'img/gbox.png' %}" height="50" width="50" alt="">-->
@@ -75,96 +99,68 @@
 
 <nav style="background:#0a364e;">
     <div class="wrapper">
-      <div class="logo"><a href="#">GEAR BOX</a></div>
-      <input type="radio" name="slider" id="menu-btn">
-      <input type="radio" name="slider" id="close-btn">
-      <ul class="nav-links">
-        <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li>
-          <a href="#" class="desktop-item">Dropdown Menu</a>
-          <input type="checkbox" id="showDrop">
-          <label for="showDrop" class="mobile-item">Dropdown Menu</label>
-          <ul class="drop-menu">
-            <li><a href="#">Drop menu 1</a></li>
-            <li><a href="#">Drop menu 2</a></li>
-            <li><a href="#">Drop menu 3</a></li>
-            <li><a href="#">Drop menu 4</a></li>
-          </ul>
-        </li>
-        <li>
-          <a href="#" class="desktop-item">Categories</a>
-          <input type="checkbox" id="showMega">
-          <label for="showMega" class="mobile-item">Mega Menu</label>
-          <div class="mega-box">
-            <div class="content">
-              <div class="row">
-                <img src="img.jpg" alt="">
-              </div>
-                {% for cat in categories %}
-              <div class="row">
-                <header>
-                    <a class="text-decoration-none" href="{% url 'products:product_list' p_or_c='p' pk=cat.pk %}">
-                        {{ cat.name }}
-                    </a>
-                </header>
+        <div class="logo"><a href="{% url 'products:product_list' %}">GEAR BOX</a></div>
+        <input type="radio" name="slider" id="menu-btn">
+        <input type="radio" name="slider" id="close-btn">
+        <ul class="nav-links text-center">
+            <label for="close-btn" class="btn close-btn"><i class="fas fa-times"></i></label>
+            <li><a href="{% url 'products:product_list' %}">Home</a></li>
+            <li>
+                <a href="#" class="desktop-item">Categories</a>
+                <input type="checkbox" id="showMega">
+                <label for="showMega" class="mobile-item">Categories</label>
+                <div class="mega-box">
+                    <div class="content">
+                        <div class="row">
+                            <img src="img.jpg" alt="">
+                        </div>
+                        {% for cat in categories %}
+                        <div class="row">
+                            <header>
+                                <a class="text-decoration-none"
+                                   href="{% url 'products:cat_product' p_or_c='p' pk=cat.pk %}">
+                                    {{ cat.name }}
+                                </a>
+                            </header>
 
-                  {% for sub_cat in cat.sub_cat.all %}
-                <ul class="mega-links">
-                  <li>
-                      <a class="text-decoration-none" href="{% url 'products:product_list' p_or_c='c' pk=sub_cat.pk %}">
-                      {{sub_cat.name}}
-                  </a>
-                  </li>
-                </ul>
-                  {% endfor %}
-              </div>
-                {% endfor %}
-<!--              <div class="row">-->
-<!--                <header>Email Services</header>-->
-<!--                <ul class="mega-links">-->
-<!--                  <li><a href="#">Personal Email</a></li>-->
-<!--                  <li><a href="#">Business Email</a></li>-->
-<!--                  <li><a href="#">Mobile Email</a></li>-->
-<!--                  <li><a href="#">Web Marketing</a></li>-->
-<!--                </ul>-->
-<!--              </div>-->
-<!--              <div class="row">-->
-<!--                <header>Security services</header>-->
-<!--                <ul class="mega-links">-->
-<!--                  <li><a href="#">Site Seal</a></li>-->
-<!--                  <li><a href="#">VPS Hosting</a></li>-->
-<!--                  <li><a href="#">Privacy Seal</a></li>-->
-<!--                  <li><a href="#">Website design</a></li>-->
-<!--                </ul>-->
-<!--              </div>-->
-            </div>
-          </div>
-        </li>
-        <li><a href="#">Feedback</a></li>
-      </ul>
-      <label for="menu-btn" class="btn menu-btn"><i class="fas fa-bars"></i></label>
-    </div>
-  </nav>
-
-
-    <div class="position-absolute top-0 end-0 p-3">
-        <div class="toast align-items-center text-white bg-success border-0"
-             role="alert" aria-live="assertive"
-             aria-atomic="true" data-bs-delay="3000">
-
-            <div class="d-flex">
-                {% for message in messages %}
-                <div class="toast-body">
-                    {{ message }}
+                            {% for sub_cat in cat.sub_cat.all %}
+                            <ul class="mega-links">
+                                <li>
+                                    <a class="text-decoration-none"
+                                       href="{% url 'products:cat_product' p_or_c='c' pk=sub_cat.pk %}">
+                                        {{sub_cat.name}}
+                                    </a>
+                                </li>
+                            </ul>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
-                        aria-label="Close"></button>
-                {% endfor %}
+            </li>
+            <li class="nav-item"><a href="{% url 'blog:blog' %}">Blog</a></li>
+        </ul>
+        <label for="menu-btn" class="btn menu-btn"><i class="fas fa-bars"></i></label>
+    </div>
+</nav>
+
+
+<div class="position-absolute top-0 end-0 p-3">
+    <div class="toast align-items-center text-white bg-success border-0"
+         role="alert" aria-live="assertive"
+         aria-atomic="true" data-bs-delay="3000">
+
+        <div class="d-flex">
+            {% for message in messages %}
+            <div class="toast-body">
+                {{ message }}
             </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"
+                    aria-label="Close"></button>
+            {% endfor %}
         </div>
     </div>
+</div>
 
 <div class="container">
     {% block nav %}{% endblock %}
@@ -197,6 +193,7 @@
     $(document).ready(function(){
         $(".toast").toast("show");
     });
+
 
 
 

@@ -27,6 +27,12 @@ class SignUp(CreateView):
     success_url = reverse_lazy('accounts:login')
     template_name = 'accounts/signup.html'
 
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.is_active = False
+        self.object.save()
+        return super().form_valid(form)
+
 
 class ProfileView(LoginRequiredMixin, DetailView):
     model = User

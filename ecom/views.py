@@ -11,11 +11,12 @@ from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.core.paginator import Paginator
 
 
-class ProductView(ListView):
-    model = Product
-    paginate_by = 8
+# class ProductView(ListView):
+#     model = Product
+#     paginate_by = 8
 
 
 def product_view(request, pk=None, p_or_c=None):
@@ -33,7 +34,10 @@ def product_view(request, pk=None, p_or_c=None):
             product_list += product
     else:
         product_list = []
-    return render(request, 'ecom/product_list.html', {'product_list': product_list})
+    paginator = Paginator(product_list, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'ecom/product_list.html', {'page_obj': page_obj})
 
 
 class ProductDetailView(DetailView):
